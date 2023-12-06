@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
+import kotlin.math.pow
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         AppCenter.start(
-            application, "fd04bdc7-2aa2-4b6d-abeb-49e66df63a16",
+            application, "b4f1ca28-165b-46a6-b1ad-10491c4a9c7b",
             Analytics::class.java, Crashes::class.java
         )
 
@@ -51,10 +52,22 @@ class MainActivity : AppCompatActivity() {
                     Analytics.trackEvent("wrong_age", properties)
                 }
 
-                resultTextView.text = "At the current rate of $interestRate%, saving \$$monthly a month you will have \$X by $retirementAge."
+                val futureSavings = calculateRetirement(interestRate, current, monthly, (retirementAge - currentAge)*12)
+
+                resultTextView.text = "At the current rate of $interestRate%, saving \$$monthly a month you will have \$${String.format("%f", futureSavings)} by $retirementAge."
             } catch (ex: Exception) {
                 Analytics.trackEvent(ex.message)
             }
         }
+    }
+
+    fun calculateRetirement(interestRate: Float, currentSavings: Float, monthly: Float, numMonths: Int): Float {
+        var futureSavings = currentSavings * (1+(interestRate/100/12)).pow(numMonths)
+
+        for (i in 1..numMonths) {
+            futureSavings += monthly * (1+(interestRate/100/12)).pow(i)
+        }
+
+        return  futureSavings
     }
 }
