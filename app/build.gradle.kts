@@ -27,20 +27,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 
 dependencies {
-    val appCenterSdkVersion = "4.4.5"
+    val appCenterSdkVersion = "5.0.3"
     implementation ("com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}")
     implementation ("com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}")
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
