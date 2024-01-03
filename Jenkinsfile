@@ -1,14 +1,32 @@
 pipeline {
     agent any
+    
     stages {
-        stage("Stage 01"){
+        stage("Starting"){
             steps {
-                echo "This is stage 01"
+                echo "Starting with Jenkins Job"
             }
         }
-        stage("Stage 02"){
+        
+        stage('Build') {
             steps {
-                echo "This is stage 02"
+                sh './gradlew assembleDebug'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh './gradlew testDebug'
+            }
+        }
+
+        stage('Publish to AppCenter') {
+            steps {
+                script {
+                    // Add commands to publish to AppCenter
+                    // For example, use the AppCenter CLI
+                    sh 'appcenter distribute release --app "your-app-id" --token "your-access-token" --file app/build/outputs/apk/debug/app-debug.apk'
+                }
             }
         }
     }
