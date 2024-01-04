@@ -1,7 +1,13 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+val signingProps = Properties()
+signingProps.load(FileInputStream(file("../signing.properties")))
 
 android {
     namespace = "com.zhbcompany.retirementcalculator"
@@ -19,10 +25,10 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("../testkeystore.keystore")
-            storePassword = "12345678"
-            keyAlias = "Key0"
-            keyPassword = "12345678"
+            keyAlias = signingProps["app.alias"] as String
+            keyPassword = signingProps["app.keyPassword"] as String
+            storeFile = file(signingProps["app.file"] as String)
+            storePassword = signingProps["app.storePassword"] as String
         }
     }
 
