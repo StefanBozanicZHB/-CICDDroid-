@@ -20,14 +20,14 @@ pipeline {
 
 stage('Publish') {
   environment {
-    APPCENTER_API_TOKEN = credentials('at-this-moment-you-should-be-with-us')
+    APPCENTER_API_TOKEN = credentials('fd61307f1658b554cd000c6539bd19c252a5fbc4')
   }
   steps {
     appCenter apiToken: APPCENTER_API_TOKEN,
-            ownerName: 'janes-addiction',
-            appName: 'ritual-de-lo-habitual',
-            pathToApp: 'three/days/xiola.apk',
-            distributionGroups: 'casey, niccoli'
+            ownerName: 'ZHB-organization',
+            appName: 'CICDDroid',
+            pathToApp: '**/app-debug.apk',
+            distributionGroups: 'testeri'
   }
 }
 
