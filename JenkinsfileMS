@@ -27,16 +27,8 @@ pipeline {
         }
 
         stage('Publish to AppCenter') {
-            // bat 'appcenter distribute release --app "your-app-id" --token "your-access-token" --file app/build/outputs/apk/debug/app-debug.apk'
-            environment {
-                APPCENTER_API_TOKEN = credentials('fd61307f1658b554cd000c6539bd19c252a5fbc4')
-            }
             steps {
-                appCenter apiToken: APPCENTER_API_TOKEN,
-                    ownerName: 'ja_zhb',
-                    appName: 'CICDDroid',
-                    pathToApp: 'app/build/outputs/apk/debug/app-debug.apk',
-                    distributionGroups: 'Beta Testers'
+                bat 'appcenter distribute release --app "ja_zhb" --token "fd61307f1658b554cd000c6539bd19c252a5fbc4" --file app/build/outputs/apk/debug/app-debug.apk'
             }
         }
     }
