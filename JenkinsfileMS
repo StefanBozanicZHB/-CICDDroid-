@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage("Starting"){
+            steps {
+                echo "Starting with Jenkins Job"
+            }
+        }
+
+        stage('Clean') {
+            steps {
+                bat './gradlew clean'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                bat './gradlew assembleDebug'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat './gradlew testDebug'
+            }
+        }
+
+        stage('Publish to AppCenter') {
+            steps {
+                script {
+                    // Add commands to publish to AppCenter
+                    // For example, use the AppCenter CLI
+                    bat 'appcenter distribute release --app "your-app-id" --token "your-access-token" --file app/build/outputs/apk/debug/app-debug.apk'
+                }
+            }
+        }
+    }
+}
