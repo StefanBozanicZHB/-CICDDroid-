@@ -27,12 +27,16 @@ pipeline {
         }
 
         stage('Publish to AppCenter') {
+            // bat 'appcenter distribute release --app "your-app-id" --token "your-access-token" --file app/build/outputs/apk/debug/app-debug.apk'
+            environment {
+                APPCENTER_API_TOKEN = credentials('at-this-moment-you-should-be-with-us')
+            }
             steps {
-                script {
-                    // Add commands to publish to AppCenter
-                    // For example, use the AppCenter CLI
-                    bat 'appcenter distribute release --app "your-app-id" --token "your-access-token" --file app/build/outputs/apk/debug/app-debug.apk'
-                }
+                appCenter apiToken: APPCENTER_API_TOKEN,
+                    ownerName: 'janes-addiction',
+                    appName: 'ritual-de-lo-habitual',
+                    pathToApp: 'app/build/outputs/apk/debug/app-debug.apk',
+                    distributionGroups: 'casey, niccoli'
             }
         }
     }
