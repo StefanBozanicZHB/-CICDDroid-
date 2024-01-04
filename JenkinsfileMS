@@ -1,10 +1,14 @@
 pipeline {
     agent any
-    
+
+    parameters {
+        booleanParam(defaultValue: false, description: "DEBUG version?", name: "isDebug")
+    }
+
     stages {
         stage("Starting"){
             steps {
-                echo "Starting with Jenkins Job"
+                echo "Starting with Jenkins Job | is debug type: ${params.isDebug}"
             }
         }
 
@@ -16,22 +20,37 @@ pipeline {
         
         stage('Build') {
             steps {
-                // bat './gradlew assembleDebug'
-                bat './gradlew assembleRelease'
+                script {
+                    if (params.isDebug == true) {
+                        bat './gradlew assembleDebug'
+                    } else {
+                        bat './gradlew assembleRelease'
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
-                // bat './gradlew testDebug'
-                bat './gradlew testRelease'
+                script {
+                    if (params.isDebug == true) {
+                        bat './gradlew testDebug'
+                    } else {
+                        bat './gradlew testRelease'
+                    }
+                }
             }
         }
 
         stage('Publish to AppCenter') {
             steps {
-                // appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDroid-Debug", pathToApp: "app/build/outputs/apk/debug/app-debug.apk", distributionGroups: "dev_team"
-                appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICD-Release", pathToApp: "app/build/outputs/apk/release/app-release-unsigned.apk", distributionGroups: "dev_team"
+                script {
+                    if (params.isDebug == true) {
+                        appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDroid-Debug", pathToApp: "app/build/outputs/apk/debug/app-debug.apk", distributionGroups: "dev_team"
+                    } else {
+                        appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICD-Release", pathToApp: "app/build/outputs/apk/release/app-release-unsigned.apk", distributionGroups: "dev_team"
+                    }
+                }
             }
         }
     }
