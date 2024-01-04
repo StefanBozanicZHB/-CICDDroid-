@@ -1,10 +1,20 @@
 pipeline {
     agent any
-    
+
+    environment {
+        def apiToken = "fd61307f1658b554cd000c6539bd19c252a5fbc4"
+        def organization = "ZHB-organization"
+        def group = "dev_team"
+    }
+
+    parameters {
+        booleanParam(defaultValue: false, description: "DEBUG version?", name: "isDebug")
+    }
+
     stages {
         stage("Starting"){
             steps {
-                echo "Starting with Jenkins Job"
+                echo "Starting with Jenkins Job | is debug type: ${params.isDebug}"
             }
         }
 
@@ -16,19 +26,37 @@ pipeline {
         
         stage('Build') {
             steps {
-                bat './gradlew assembleDebug'
+                script {
+                    if (params.isDebug == true) {
+                        bat './gradlew assembleDebug'
+                    } else {
+                        bat './gradlew assembleRelease'
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
-                bat './gradlew testDebug'
+                script {
+                    if (params.isDebug == true) {
+                        bat './gradlew testDebug'
+                    } else {
+                        bat './gradlew testRelease'
+                    }
+                }
             }
         }
 
         stage('Publish to AppCenter') {
             steps {
-                appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDDroid", pathToApp: "**/app-debug.apk", distributionGroups: "testeri"
+                script {
+                    if (params.isDebug == true) {
+                        appCenter apiToken: apiToken, ownerName: organization, appName: "CICDroid-Debug", pathToApp: "app/build/outputs/apk/debug/app-debug.apk", distributionGroups: group
+                    } else {
+                        appCenter apiToken: apiToken, ownerName: organization, appName: "CICD-Release", pathToApp: "app/build/outputs/apk/release/app-release-unsigned.apk", distributionGroups: group
+                    }
+                }
             }
         }
     }
