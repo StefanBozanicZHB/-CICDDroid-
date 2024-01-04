@@ -7,6 +7,12 @@ pipeline {
                 echo "Starting with Jenkins Job"
             }
         }
+
+        stage('Clean') {
+            steps {
+                sh './gradlew clean'
+            }
+        }
         
         stage('Build') {
             steps {
