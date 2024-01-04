@@ -8,11 +8,7 @@ pipeline {
             }
         }
 
-        stage('Clean') {
-            steps {
-                //bat './gradlew clean'
-            }
-        }
+
         
         stage('Build') {
             steps {
@@ -20,11 +16,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                //bat './gradlew testDebug'
-            }
-        }
+
 
     }
 }
