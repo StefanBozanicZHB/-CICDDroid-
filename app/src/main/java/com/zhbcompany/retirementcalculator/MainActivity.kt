@@ -1,5 +1,7 @@
 package com.zhbcompany.retirementcalculator
 
+import android.annotation.SuppressLint
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -13,6 +15,7 @@ import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,6 +32,15 @@ class MainActivity : AppCompatActivity() {
         val monthlySavingsEditText: EditText = findViewById(R.id.monthlySavingsEditText)
         val currentEditText: EditText = findViewById(R.id.currentEditText)
         val resultTextView: TextView = findViewById(R.id.resultTextView)
+        val typeBuild: TextView = findViewById(R.id.typeBuild)
+
+        val isDebuggable = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
+
+        if (isDebuggable) {
+            typeBuild.text = "Debug Version"
+        } else {
+            typeBuild.text = "Release Version"
+        }
 
         calculateButton.setOnClickListener {
             try {
