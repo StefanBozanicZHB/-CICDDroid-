@@ -28,7 +28,7 @@ pipeline {
 
         stage('Publish to AppCenter') {
             steps {
-                appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDDroid", pathToApp: "**/app-debug.apk", distributionGroups: "testeri"
+                appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDroid Debug", pathToApp: "/app/build/outputs/apk/debug/app-debug.apk", distributionGroups: "dev_team"
             }
         }
     }
