@@ -16,20 +16,10 @@ pipeline {
             }
         }
 
-
-
-stage('Publish') {
-  environment {
-    APPCENTER_API_TOKEN = credentials('fd61307f1658b554cd000c6539bd19c252a5fbc4')
-  }
-  steps {
-    appCenter apiToken: APPCENTER_API_TOKEN,
-            ownerName: 'ZHB-organization',
-            appName: 'CICDDroid',
-            pathToApp: '**/app-debug.apk',
-            distributionGroups: 'testeri'
-  }
-}
-
+        stage('Publish to AppCenter') {
+		    steps {
+                appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDDroid", pathToApp: "**/app-debug.apk", distributionGroups: "testeri"
+        	}
+	    }
     }
 }
