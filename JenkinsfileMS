@@ -18,8 +18,7 @@ pipeline {
 
         stage('Publish to AppCenter') {
             steps {
-                bat 'npm install -g appcenter-cli@1.2.2'
-                bat 'appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDDroid", pathToApp: "app/build/outputs/apk/debug/app-debug.apk", distributionGroups: "testeri"'
+                bat 'appCenter apiToken: "fd61307f1658b554cd000c6539bd19c252a5fbc4", ownerName: "ZHB-organization", appName: "CICDDroid", pathToApp: "**/app-debug.apk", distributionGroups: "testeri"'
             }
         }
 
