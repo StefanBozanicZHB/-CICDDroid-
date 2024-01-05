@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        SECRET_FILE = credentials('cicdroid.properties')
         def API_TOKEN = credentials('app-center-api-token')
         def organization = "ZHB-organization"
         def group = "dev_team"
@@ -13,6 +12,17 @@ pipeline {
     }
 
     stages {
+
+        stage('Copy Secret File') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'cicdroid.properties', variable: 'SECRET_FILE')]) {
+                        sh "cp \$SECRET_FILE \$WORKSPACE/"
+                    }
+                }
+            }
+        }
+
         stage("Starting"){
             steps {
                 echo "Starting with Jenkins Job | is debug type: ${params.isDebug}"
