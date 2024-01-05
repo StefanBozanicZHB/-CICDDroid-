@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'cicdroid.properties', variable: 'SECRET_FILE')]) {
-                        sh "cp \$SECRET_FILE \$WORKSPACE/"
+                        sh "cp \$SECRET_FILE ."
                     }
                 }
             }
