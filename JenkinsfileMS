@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        SECRET_FILE = credentials('cicdroid.properties')
         def API_TOKEN = credentials('app-center-api-token')
         def organization = "ZHB-organization"
         def group = "dev_team"
