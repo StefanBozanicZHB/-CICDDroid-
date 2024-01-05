@@ -1,71 +1,16 @@
 pipeline {
     agent any
 
-    environment {
-        def API_TOKEN = credentials('app-center-api-token')
-        def organization = "ZHB-organization"
-        def group = "dev_team"
-    }
-
     parameters {
         booleanParam(defaultValue: false, description: "DEBUG version?", name: "isDebug")
     }
 
     stages {
-
         stage('Copy Secret File') {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'cicdroid.properties', variable: 'SECRET_FILE')]) {
                         sh "cp \$SECRET_FILE \$WORKSPACE/"
-                    }
-                }
-            }
-        }
-
-        stage("Starting"){
-            steps {
-                echo "Starting with Jenkins Job | is debug type: ${params.isDebug}"
-            }
-        }
-
-        stage('Clean') {
-            steps {
-                bat './gradlew clean'
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                script {
-                    if (params.isDebug == true) {
-                        bat './gradlew assembleDebug'
-                    } else {
-                        bat './gradlew assembleRelease'
-                    }
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    if (params.isDebug == true) {
-                        bat './gradlew testDebug'
-                    } else {
-                        bat './gradlew testRelease'
-                    }
-                }
-            }
-        }
-
-        stage('Publish to AppCenter') {
-            steps {
-                script {
-                    if (params.isDebug == true) {
-                        appCenter apiToken: API_TOKEN, ownerName: organization, appName: "CICDroid-Debug", pathToApp: "app/build/outputs/apk/debug/app-debug.apk", distributionGroups: group
-                    } else {
-                        appCenter apiToken: API_TOKEN, ownerName: organization, appName: "CICD-Release", pathToApp: "app/build/outputs/apk/release/app-release-unsigned.apk", distributionGroups: group
                     }
                 }
             }
