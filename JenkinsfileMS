@@ -64,7 +64,7 @@ pipeline {
                     if (params.isDebug == true) {
                         appCenter apiToken: API_TOKEN, ownerName: organization, appName: "CICDroid-Debug", pathToApp: "app/build/outputs/apk/debug/app-debug.apk", distributionGroups: group
                     } else {
-                        appCenter apiToken: API_TOKEN, ownerName: organization, appName: "CICD-Release", pathToApp: "app/build/outputs/apk/release/app-release-unsigned.apk", distributionGroups: group
+                        appCenter apiToken: API_TOKEN, ownerName: organization, appName: "CICD-Release", pathToApp: "app/build/outputs/apk/release/app-release.apk", distributionGroups: group
                     }
                 }
             }
