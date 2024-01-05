@@ -6,11 +6,19 @@ pipeline {
     }
 
     stages {
+        stage('Print') {
+            steps {
+                script {
+                    echo "Starting with Jenkins Job | is debug type: ${env.WORKSPACE}"
+                }
+            }
+        }
+
         stage('Copy Secret File') {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'cicdroid.properties', variable: 'SECRET_FILE')]) {
-                        bat "copy %SECRET_FILE% ."
+                        bat "copy %SECRET_FILE% %WORKSPACE%\\file"
                     }
                 }
             }
